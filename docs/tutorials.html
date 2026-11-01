@@ -496,7 +496,8 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
 <a href="index.html#features">功能</a>
 <a href="index.html#faq">常见问题</a>
 <a href="index.html#about">关于</a>
-<a class="nav-gh" href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener" title="GitHub 仓库"><svg class="ic"><use href="#i-repo"/></svg><span>GitHub</span></a>
+<a class="nav-gh" href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener" title="主用仓库"><svg class="ic"><use href="#i-repo"/></svg><span>主用仓库</span></a>
+<a class="nav-gh" href="https://github.com/KLP-KULIPA-BACKUP/ETS-TOOLS-BACKUP" target="_blank" rel="noopener" title="主用仓库打不开时用这个"><svg class="ic"><use href="#i-shield"/></svg><span>备用仓库</span></a>
 </div>
 <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅色"><svg class="ic" id="themeIcon"><use href="#i-moon"/></svg></button>
 </div></nav>
@@ -989,7 +990,7 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
           <details><summary>Agnes 国内站和国际站怎么选？</summary><p>内置两站都免费、不限额度、注册送 Key。国内站更稳但要实名；国际站免实名但可能没那么流畅。按你注册的那一站填对应提供商，Key 不通用。</p></details>
           <details><summary>修改成绩会不会被 E听说 识别？</summary><p>改写发生在你本机提交前的代理层，E听说 端记录按改写后的值呈现。是否触发 E听说 自身风控由其决定，App 不干预——请自行把握使用边界（第 9 章）。</p></details>
           <details><summary>多开会不会顶掉别人？</summary><p>同一账号同时在线数超过后台上限时，<b>新设备</b>会被踢；保留的设备不受影响。超限属正常限制，不是 bug。</p></details>
-          <details><summary>网页打不开？</summary><p>主站 klp-kulipa-24.github.io/ETS-TOOLS；国内访问不了用备用站 ets-tools.klp-kulipa.workers.dev（内容相同）。更新检查也是主站优先、备用站兜底。</p></details>
+          <details><summary>网页打不开？</summary><p>按顺序试：主站 <b>klp-kulipa-24.github.io/ETS-TOOLS</b> → 备用站 <b>klp-kulipa-backup.github.io/ETS-TOOLS-BACKUP</b> → 备用站 2 <b>ets-tools.klp-kulipa.workers.dev</b>（跨平台兜底）。三站内容相同；软件里的「检查更新」也按这个顺序自动回退。</p></details>
         </div>
       </section>
 
@@ -1009,7 +1010,7 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
 
           <h3 class="t-h3" id="s13-feedback"><svg class="ic"><use href="#i-chat"/></svg>反馈与开发通道</h3>
           <p>遇到 App 内问题，可回闸门页「意见反馈」框描述。开发场景：框内输入 <code>开发者模式</code> 提交即可跳过版本检测（这是给作者本人的免记忆关键词，界面上直接写着，不保密只求省事）；原口令摘要通道继续有效。</p>
-          <div class="t-note tip"><span class="t-note-tag"><svg class="ic"><use href="#i-repo"/></svg>仓库</span>GitHub 仓库 <a href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener" style="color:var(--primary)">KLP-KULIPA-24/ETS-TOOLS</a>，Release 正文与发行日志在仓库内。</div>
+          <div class="t-note tip"><span class="t-note-tag"><svg class="ic"><use href="#i-repo"/></svg>仓库</span>主用仓库 <a href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener" style="color:var(--primary)">KLP-KULIPA-24/ETS-TOOLS</a>，打不开时用备用仓库 <a href="https://github.com/KLP-KULIPA-BACKUP/ETS-TOOLS-BACKUP" target="_blank" rel="noopener" style="color:var(--primary)">KLP-KULIPA-BACKUP/ETS-TOOLS-BACKUP</a>。Release 正文与发行日志在仓库内。</div>
         </div>
       </section>
 
@@ -1030,7 +1031,10 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
       <a href="index.html#features">功能</a>
       <a href="index.html#faq">常见问题</a>
       <a href="index.html#about">关于</a>
-      <a href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener">GitHub 仓库</a>
+      <a href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener" title="主用仓库">主用仓库</a>
+      <a href="https://github.com/KLP-KULIPA-BACKUP/ETS-TOOLS-BACKUP" target="_blank" rel="noopener" title="主用仓库打不开时用这个">备用仓库</a>
+      <a href="https://klp-kulipa-backup.github.io/ETS-TOOLS-BACKUP/" target="_blank" rel="noopener" title="主站打不开时用这个">备用站点</a>
+      <a href="https://ets-tools.klp-kulipa.workers.dev/" target="_blank" rel="noopener" title="跨平台兜底">备用站点 2</a>
     </nav>
     <div class="foot-meta">© 2026 苦力怕.KULIPA · 软件免费，授权时长由作者控制 · 仅供学习研究使用</div>
   </footer>
