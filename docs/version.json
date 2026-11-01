@@ -1,0 +1,7 @@
+{
+  "version": "0.8.3",
+  "released": "2026-11-01",
+  "url": "https://klp-kulipa-24.github.io/ETS-TOOLS/",
+  "notes": "V0.8.3：修复 Edge TTS 朗读握手（v2 Sec-MS-GEC），教程高亮对齐真实控件；安卓悬浮窗重做（背景不透明、跟随主题色、深浅色独立）；主题色支持渐变与彩虹动态并保真取色；新增解绑机器码；登录与校验反馈全面修复；Agnes 预设统一为国内站/国际站。",
+  "blacklist": []
+}
