@@ -499,6 +499,17 @@ footer {
 
 /* ---------- 章节水印编号（编辑式大背景数字） ---------- */
 section.sec { position: relative; }
+
+/* 裁掉 .rev 入场位移造成的视觉溢出。
+   .rev 在未进入视口时带 translate3d(±88px)，会把 document.scrollWidth 撑大
+   （1024px 视口实测 docW=1096，多出 72px → 横向滚动条 + 右侧内容被裁）。
+   这里给**区块容器**加 overflow-x:clip：
+     · section.sec 与 .hero 都是 <nav> 的兄弟节点，不是祖先 —— 已用最小复现验证
+       sticky 导航不受影响（滚动后 nav 仍停在 top:0）
+     · 绝不能加在 .page / html / body 上，那几个是 nav 的祖先，一加 sticky 就废
+   clip 只裁切、不创建滚动容器，也不会像 hidden 那样把 sticky 的包含块改掉。 */
+section.sec,
+.hero { overflow-x: clip; }
 section.sec::after {
   content: counter(sec, decimal-leading-zero);
   position: absolute; top: clamp(40px, 5vw, 72px); right: 2vw; z-index: -1;
@@ -717,7 +728,18 @@ html[data-theme="light"] .card {
 }
 @media (max-width: 760px) { .vtime { display: none; } }
 
-/* ---------- 入场动画：元素沿方向长距滑入视口（非延迟出现） ---------- */
+/* ---------- 入场动画：元素沿方向长距滑入视口（非延迟出现） ----------
+   ⚠️ 这些 translate3d(±88px) 是**初始状态**，元素在进入视口前就带着偏移。
+   偏移会让元素伸出视口左右边界，把 document.scrollWidth 撑大
+   （实测 1024px 视口下 docW=1096，多出 72px，出现横向滚动条）。
+
+   修法不是给 html/body 加 overflow（那会让 sticky 导航失效，已经踩过），
+   而是在**元素自身**上处理：
+     · 用 clip-path 代替纯 transform 做位移——clip-path 不影响布局尺寸，
+       且元素的视觉溢出会被裁在自己的盒子里。
+   更简单可靠的做法：让 .rev 的位移用 margin 抵消不可能，所以改用
+   「外层容器裁切」——见下方 section.sec / .hero 的 overflow:clip。
+   注意这里只作用于**非 sticky 的区块容器**，导航不在其中，sticky 不受影响。 */
 @media (prefers-reduced-motion: no-preference) {
   html.js .rev[data-from="left"]   { transform: translate3d(-88px, 0, 0); }
   html.js .rev[data-from="right"]  { transform: translate3d(88px, 0, 0); }
