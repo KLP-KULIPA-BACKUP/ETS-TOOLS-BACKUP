@@ -347,15 +347,22 @@ html[data-theme="light"] .feat-card {
 /* 横向溢出防护：手机上出现"右侧空白 + 组件溢出"基本都是某个子元素
    （表格/长串/媒体）撑破了版心。这里从根上兜住：外层不横滑，
    宽内容自己在自己的盒子里横滑。 */
-/* 横向溢出兜底：必须**全局生效**，不能只在手机断点里。
-   .rev 入场动画有 translate3d(±88px) 的初始位移，未触发的区块会停在偏移位置
-   并把 scrollWidth 撑大（实测 780~1100px 下多出 72px，出现横向滚动条）。
-   过去这两条只在 @media (max-width:760px) 里，导致 780~1100 这个区间完全没有保护。
-   宽内容（表格/长串）仍然在自己盒子里横滑，不受影响。 */
-html, body { overflow-x: hidden; }
-.hero, .sec, .wrap, footer { max-width: 100vw; overflow-x: clip; }
+/* 横向溢出兜底。
+   ⚠️ 这条**只能在手机断点里**（见下方 @media）。放到全局会让 html/body 变成
+   滚动容器，position:sticky 的导航立刻失效——实测滚一下导航就整条消失。
+   同理也不能给 .hero/.sec/.wrap/footer 加任何 overflow（sticky 的祖先带了
+   overflow 一样会失效）。 */
 
 @media (max-width: 760px) {
+  /* 用 overflow-x:clip 而不是 hidden：
+     hidden 会让 html/body 成为滚动容器，position:sticky 的导航随之失效
+     （实测手机端往下滑导航整条消失）。clip 只裁切、不建滚动容器，sticky 正常。
+     旧版 Safari 不认 clip 时退回 hidden，此时导航贴顶也不影响使用。 */
+  html, body { overflow-x: clip; overflow-x: hidden; }
+  @supports (overflow: clip) {
+    html, body { overflow-x: clip; }
+  }
+  .hero, .sec, .wrap, footer { max-width: 100vw; }
   img, video, svg, canvas { max-width: 100%; height: auto; }
   .tbl { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   pre, code, .file-row, .dl-row { overflow-wrap: anywhere; word-break: break-word; }
