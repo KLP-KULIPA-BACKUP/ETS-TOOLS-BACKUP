@@ -139,6 +139,10 @@ section { max-width: 1120px; margin: 0 auto; padding: 0 var(--s4); }
 .nav-links a {
   text-decoration: none; font-size: var(--f-sm); color: var(--text-muted);
   padding: var(--s1) var(--s3); border-radius: 999px;
+  /* 窄屏（约 860px 以下）时导航整体变挤，若不锁单行，"主用仓库/常见问题"这类
+     四字项会被压成竖排（高度从 30 变 52，整条导航变形）。这里锁死不换行；
+     放不下时由下方 <=900px 的媒体查询把次要项收起来。 */
+  white-space: nowrap;
   transition: background 120ms var(--ease), color 120ms var(--ease), transform var(--press-dur) var(--ease);
 }
 .nav-links a:hover { color: var(--text); background: var(--surface); }
@@ -343,9 +347,15 @@ html[data-theme="light"] .feat-card {
 /* 横向溢出防护：手机上出现"右侧空白 + 组件溢出"基本都是某个子元素
    （表格/长串/媒体）撑破了版心。这里从根上兜住：外层不横滑，
    宽内容自己在自己的盒子里横滑。 */
+/* 横向溢出兜底：必须**全局生效**，不能只在手机断点里。
+   .rev 入场动画有 translate3d(±88px) 的初始位移，未触发的区块会停在偏移位置
+   并把 scrollWidth 撑大（实测 780~1100px 下多出 72px，出现横向滚动条）。
+   过去这两条只在 @media (max-width:760px) 里，导致 780~1100 这个区间完全没有保护。
+   宽内容（表格/长串）仍然在自己盒子里横滑，不受影响。 */
+html, body { overflow-x: hidden; }
+.hero, .sec, .wrap, footer { max-width: 100vw; overflow-x: clip; }
+
 @media (max-width: 760px) {
-  html, body { overflow-x: hidden; }
-  .hero, .sec, .wrap, footer { max-width: 100vw; overflow-x: clip; }
   img, video, svg, canvas { max-width: 100%; height: auto; }
   .tbl { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   pre, code, .file-row, .dl-row { overflow-wrap: anywhere; word-break: break-word; }
@@ -733,6 +743,29 @@ html[data-theme="light"] .card {
 }
 .nav.shrunk .nav-in { max-width: 680px; padding-left: var(--s3); padding-right: var(--s2); }
 .nav .nav-links a { transition: background 120ms var(--ease), color 120ms var(--ease); }
+
+/* ---------- 导航适配（桌面窄屏） ----------
+   加了「主用仓库 / 备用仓库」两个入口后，导航在 900px 上下开始放不下：
+   文字被压成竖排（高度 30→52），整条导航变形。
+   处理策略是「按优先级丢项」，而不是让它挤压换行：
+     · <=1100px：收紧每项左右内边距，先把省下的空间用掉
+     · <=980px ：隐藏两个仓库入口（页脚与关于区仍有）
+     · <=900px ：再隐藏 演示/原理/服务 三项次要导航
+   760px 以下走移动端规则（链接区可横滑，仓库入口本就 display:none）。 */
+@media (max-width: 1100px) {
+  .nav-links a { padding: var(--s1) var(--s2); }
+  .nav-links a.nav-gh { gap: 5px; }
+}
+@media (max-width: 980px) {
+  /* 仓库入口在页脚 / 关于区都有，导航栏先让位 */
+  .nav-links a.nav-gh { display: none; }
+}
+@media (max-width: 900px) {
+  /* 保留：下载 / 教程 / 功能 / 常见问题 / 关于 —— 转化与查找最相关的五项 */
+  .nav-links a[data-nav="demo"],
+  .nav-links a[data-nav="how"],
+  .nav-links a[data-nav="services"] { display: none; }
+}
 
 /* ---------- 回到顶部 ---------- */
 #toTop {
@@ -1198,14 +1231,14 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
     <div class="nav-in">
       <a class="brand" href="#top" title="回到顶部"><img class="mark" src="./assets/app-icon.png" alt="" width="24" height="24" /><span>E听说助手</span><span class="nav-ver">V0.8.3</span></a>
       <div class="nav-links">
-        <a href="#demo">演示</a>
-        <a href="#download">下载</a>
-        <a href="tutorials.html">教程</a>
-        <a href="#features">功能</a>
-        <a href="#how">原理</a>
-        <a href="#services">服务</a>
-        <a href="#faq">常见问题</a>
-        <a href="#about">关于</a>
+        <a href="#demo" data-nav="demo">演示</a>
+        <a href="#download" data-nav="download">下载</a>
+        <a href="tutorials.html" data-nav="tutorials">教程</a>
+        <a href="#features" data-nav="features">功能</a>
+        <a href="#how" data-nav="how">原理</a>
+        <a href="#services" data-nav="services">服务</a>
+        <a href="#faq" data-nav="faq">常见问题</a>
+        <a href="#about" data-nav="about">关于</a>
         <a class="nav-gh" href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener" title="主用仓库"><svg class="ic"><use href="#i-repo"/></svg><span>主用仓库</span></a>
         <a class="nav-gh" href="https://github.com/KLP-KULIPA-BACKUP/ETS-TOOLS-BACKUP" target="_blank" rel="noopener" title="主用仓库打不开时用这个"><svg class="ic"><use href="#i-shield"/></svg><span>备用仓库</span></a>
       </div>
@@ -1860,6 +1893,34 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
       });
     }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
     items.forEach(function (el) { io.observe(el); });
+
+    /* 兜底：未触发的 .rev 会停在 translate3d(±88px) 且 opacity:0，
+       既看不见又把页面撑出横向滚动条（实测 780~1100px 宽度下
+       scrollWidth 比视口多 72px）。两种场景必须补上：
+         1) 页面首次渲染时已在视口外、且用户从不滚过去的区块
+         2) 快速滚动时 IO 回调没来得及跑的区块
+       这里在加载后与滚动空闲时各补一次：把已进入视口范围的一律标记为 in。 */
+    function revealPassed() {
+      var vh = window.innerHeight;
+      for (var i = 0; i < items.length; i++) {
+        var el = items[i];
+        if (el.classList.contains('in')) continue;
+        var r = el.getBoundingClientRect();
+        // 已经越过可视区（顶部在视口底部之上）→ 直接显示，不该再等
+        if (r.top < vh) {
+          el.classList.add('in');
+          io.unobserve(el);
+        }
+      }
+    }
+    window.addEventListener('load', function () { setTimeout(revealPassed, 300); });
+    var revealTimer = null;
+    window.addEventListener('scroll', function () {
+      if (revealTimer) return;
+      revealTimer = setTimeout(function () { revealTimer = null; revealPassed(); }, 180);
+    }, { passive: true });
+    // 首屏同步跑一次，保证刚加载就可见的区块不会残留偏移
+    setTimeout(revealPassed, 120);
   } else {
     items.forEach(function (el) { el.classList.add('in'); });
   }
