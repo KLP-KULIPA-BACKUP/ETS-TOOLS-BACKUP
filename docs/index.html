@@ -770,7 +770,19 @@ html[data-theme="light"] .card {
 @media (max-width: 760px) {
   .nav.shrunk .nav-in { max-width: 100%; padding-left: var(--s3); padding-right: var(--s2); }
 }
-.nav.shrunk .nav-in { max-width: 680px; padding-left: var(--s3); padding-right: var(--s2); }
+/* 收缩态：只收紧内边距，max-width 必须**留足内容宽度**。
+   原先写死 680px，而内容实际需要 ~840px（品牌 155 + 链接 641 + 主题按钮 44），
+   装不下时 flex 会把文字压成竖排——1920 屏滚动时"E听说助手"变一列字、仓库按钮挤出条外。
+   这里改成 min(1120px, 100%) 让宽度跟内容走，靠 padding 收窄来体现"缩小"。 */
+.nav.shrunk .nav-in {
+  max-width: min(1120px, 100%);
+  padding-left: var(--s3);
+  padding-right: var(--s2);
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.nav.shrunk .brand .nav-ver { opacity: 0; width: 0; padding: 0; border: 0; margin-left: 0; overflow: hidden; }
+.nav.shrunk .nav-links a { padding-left: var(--s2); padding-right: var(--s2); }
 .nav .nav-links a { transition: background 120ms var(--ease), color 120ms var(--ease); }
 
 /* ---------- 导航适配（桌面窄屏） ----------
