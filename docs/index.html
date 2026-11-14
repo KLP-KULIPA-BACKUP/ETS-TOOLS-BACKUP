@@ -1078,11 +1078,14 @@ summary::after {
 details[open] summary::after { content: "−"; color: var(--primary); transform: rotate(180deg); }
 details p { margin-top: var(--s3); font-size: var(--f-sm); color: var(--text-muted); }
 
-/* ---------- 关于：作者 + 内测名单 ---------- */
+/* ---------- 关于：作者 ---------- */
 .about-grid {
   display: grid; gap: var(--s4);
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  max-width: 900px;
+  /* 关于区现在只有作者一张卡：
+     原来按 auto-fit + 320px 放宽到 900px，单卡会占半边、右边空一块。
+     改成单列、与正文同宽，视觉上才是正常的一整块。 */
+  grid-template-columns: 1fr;
+  max-width: 100%;
 }
 .about-card {
   display: flex; flex-direction: column; gap: var(--s3);
@@ -1112,16 +1115,6 @@ details p { margin-top: var(--s3); font-size: var(--f-sm); color: var(--text-mut
 }
 .about-card > p { font-size: var(--f-sm); color: var(--text-muted); line-height: 1.7; }
 .about-card .btn { align-self: flex-start; }
-.beta-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
-.beta-list li {
-  display: flex; align-items: center; gap: var(--s3);
-  padding: var(--s3); border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
-  background: color-mix(in srgb, var(--primary) 6%, transparent);
-}
-.beta-list .about-av { width: 44px; height: 44px; }
-.beta-nm { font-size: var(--f-sm); font-weight: 600; }
-.beta-sub { font-size: var(--f-xs); color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
 @media (max-width: 760px) {
   .about-grid { grid-template-columns: 1fr; }
   .about-card { padding: var(--s4) var(--s3); }
@@ -1701,8 +1694,8 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
   <section id="about" class="sec">
     <div class="sec-head rev" data-from="up">
       <div class="eyebrow">关于</div>
-      <h2>谁在做，谁先试</h2>
-      <p>作者，以及邀请制加入的内测用户。</p>
+      <h2>谁在做</h2>
+      <p>一个人开发与维护，闭源发布。</p>
     </div>
     <div class="about-grid">
       <article class="about-card rev" data-from="left">
@@ -1719,23 +1712,6 @@ html.theming, html.theming *, html.theming *::before, html.theming *::after {
           <a class="btn btn-g btn-sm" href="https://github.com/KLP-KULIPA-24/ETS-TOOLS" target="_blank" rel="noopener"><svg class="ic"><use href="#i-repo"/></svg>主用仓库</a>
           <a class="btn btn-g btn-sm" href="https://github.com/KLP-KULIPA-BACKUP/ETS-TOOLS-BACKUP" target="_blank" rel="noopener"><svg class="ic"><use href="#i-shield"/></svg>备用仓库</a>
         </div>
-      </article>
-
-      <article class="about-card rev" data-from="right">
-        <div class="about-hd">
-          <h3>我们的内测用户</h3>
-          <span class="about-badge">邀请制</span>
-        </div>
-        <ul class="beta-list">
-          <li>
-            <img class="about-av" src="./assets/cynthia.jpg" alt="Cynthia" width="44" height="44" loading="lazy" />
-            <div>
-              <div class="beta-nm">Cynthia</div>
-              <div class="beta-sub">内测用户，邀请制加入。</div>
-            </div>
-          </li>
-        </ul>
-        <p>内测采用邀请制，名单由作者扩充，与版本号、注册先后无关；受邀用户享有更多内测权限，名单会不定期更新。</p>
       </article>
     </div>
   </section>
